@@ -1,30 +1,30 @@
-gpu: cuda:0
-batch_size: 16                           # batch size
-epochs: 50                                # total number of epochs
-warmup: 10                                # warm-up epochs
-
-eval_every_n_epochs: 1                    # validation frequency
-resume_from: None                         # resume training
-log_every_n_steps: 200                    # print training log frequency
+batch_size: 1
+world_size: 3
+backend: nccl
+epochs: 50
+eval_every_n_epochs: 1
+resume_from: /home/srkpa/projects/no-name/iMolCLR/pretrained/ckpt/
+log_every_n_steps: 200
+warmup: 10
+sub_coeff: 0.5
 
 optim:
-  init_lr: 0.0005                              # initial learning rate for Adam optimizer
-  weight_decay: 0.00001                   # weight decay for Adam for Adam optimizer
+  type: Adam
+  lr: 0.0005
+  weight_decay: 0.00001
 
 model: 
-  num_layer: 5                            # number of graph conv layers
-  emb_dim: 300                            # embedding dimension in graph conv layers
-  feat_dim: 512                           # output feature dimention
-  dropout: 0                              # dropout ratio
-  pool: mean                              # readout pooling (i.e., mean/max/add)
+  num_layer: 5
+  emb_dim: 300
+  feat_dim: 512
+  dropout: 0
+  pool: mean
 
 dataset:
-  num_workers: 12                         # dataloader number of workers
-  valid_size: 0.05                        # ratio of validation data
-  data_path: data/pubchem-10k.txt   # path of pre-training data
+  num_workers: 24
+  valid_size: 0
+  data_path: /home/srkpa/projects/no-name/.data/molcr_drugbank/graph_0.98_0.0_smi.csv
 
 loss:
-  temperature: 0.1                        # temperature of (weighted) NT-Xent loss
-  use_cosine_similarity: True             # whether to use cosine similarity in (weighted) NT-Xent loss (i.e. True/False)
-  lambda_1: 0.5                           # $\lambda_1$ to control faulty negative mitigation 
-  lambda_2: 0.5                           # $\lambda_2$ to control fragment contrast
+  temperature: 0.1
+  use_cosine_similarity: True
